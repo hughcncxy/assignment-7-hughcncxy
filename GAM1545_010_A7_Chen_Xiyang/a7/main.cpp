@@ -4,15 +4,10 @@
 #include <random>
 using namespace std;
 
-std::random_device seed;
-std::mt19937 mersenneTwister(seed());
-
 int RandomInt(int min, int max);
 //This function is used to generate a random number within certain range.
 int GetInteger();
 //This function will make sure the input is an integer.
-void CheckToExit(int a);
-//This function is used to exit
 
 int main()
 {
@@ -21,10 +16,7 @@ int main()
 	int input = 0; //to store the input as a local variable
 
 	//generate the array
-	for (int i = 0; i < 10000; i++) {
-		arr[RandomInt(1, size) - 1] += 1;
-
-	}
+	for (int i = 0; i < 10000; i++) arr[RandomInt(1, size) - 1] += 1;
 
 	//user interface
 	cout << "Welcome to my amazing number generator!"
@@ -35,7 +27,6 @@ int main()
 
 	//input a number, and answer repetition.
 	input = GetInteger();
-	CheckToExit(input);
 	cout << input << " appears " << arr[input - 1] << " times. " << endl;
 
 	//in case the user wants to re-enter a number or exit
@@ -43,11 +34,8 @@ int main()
 		cout << endl << endl << "Would you like to enter another number?" 
 			<< endl	<< "(To exit from the app, please enter -1.)" << endl;
 
-		//re-enter a number
+		//re-enter a number or check to exit
 		input = GetInteger();
-		//Or check to exit
-		CheckToExit(input);
-
 		cout << input << " appears " << arr[input - 1] << " times. " << endl;
 
 	} while (input != -1);//checking condition, -1 to exit
@@ -57,7 +45,9 @@ int main()
 }
 
 int RandomInt(int min, int max) {
-	std::uniform_int_distribution<int> distribution(min, max);
+	random_device seed;
+	mt19937 mersenneTwister(seed());
+	uniform_int_distribution<int> distribution(min, max);
 	return distribution(mersenneTwister);
 
 }
@@ -70,25 +60,18 @@ int GetInteger() {
 
 	}
 
-	if (a == -1) {
-		return a;
-	} else if (a < 1 || a > 500) { // if the input is out of range, exit the app.
-		cout << "ERROR: You must enter an integer between 1 and 500!" << endl;
-		system("pause");
-		exit(0);
-	
-	}
-
-	return a;
-
-}
-
-void CheckToExit(int input) {
-	if (input == -1) {// check to exit
-		cout << "\nThank you for using number generator. Bye-bye!" << endl;
+	if (a == -1) { //exit when user enter -1
+		cout << "\nThank you for using number generator. Bye-bye!\n\n\n" << endl;
 		system("pause");
 		exit(0);
 
 	}
+	else if (a < 1 || a > 500) { // if the input is out of range, exit the app.
+		cout << "ERROR: You must enter an integer between 1 and 500!\n\n\n" << endl;
+		system("pause");
+		exit(0);
+
+	} else return a;
 
 }
+
